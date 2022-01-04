@@ -1,0 +1,12 @@
+C:\Users\SAFAYET-IT\source\repos\WebAPI.Data\obj\Debug\net5.0\WebAPI.Data.csproj.AssemblyReference.cache
+C:\Users\SAFAYET-IT\source\repos\WebAPI.Data\obj\Debug\net5.0\WebAPI.Data.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\SAFAYET-IT\source\repos\WebAPI.Data\obj\Debug\net5.0\WebAPI.Data.AssemblyInfoInputs.cache
+C:\Users\SAFAYET-IT\source\repos\WebAPI.Data\obj\Debug\net5.0\WebAPI.Data.AssemblyInfo.cs
+C:\Users\SAFAYET-IT\source\repos\WebAPI.Data\obj\Debug\net5.0\WebAPI.Data.csproj.CoreCompileInputs.cache
+C:\Users\SAFAYET-IT\source\repos\WebAPI.Data\bin\Debug\net5.0\WebAPI.Data.deps.json
+C:\Users\SAFAYET-IT\source\repos\WebAPI.Data\bin\Debug\net5.0\WebAPI.Data.dll
+C:\Users\SAFAYET-IT\source\repos\WebAPI.Data\bin\Debug\net5.0\ref\WebAPI.Data.dll
+C:\Users\SAFAYET-IT\source\repos\WebAPI.Data\bin\Debug\net5.0\WebAPI.Data.pdb
+C:\Users\SAFAYET-IT\source\repos\WebAPI.Data\obj\Debug\net5.0\WebAPI.Data.dll
+C:\Users\SAFAYET-IT\source\repos\WebAPI.Data\obj\Debug\net5.0\ref\WebAPI.Data.dll
+C:\Users\SAFAYET-IT\source\repos\WebAPI.Data\obj\Debug\net5.0\WebAPI.Data.pdb
