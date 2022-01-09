@@ -3,9 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebAPI.Data;
-using WebAPI.Data.Interface;
-using WebAPI.Data.Models;
+using WebAPI.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,26 +13,32 @@ namespace WebAPI.Controllers
     [ApiController]
     public class SalaryController : ControllerBase
     {
-        private readonly ISalaryService _salaryService;
+        //private readonly ISalaryService _salaryService;
         private readonly ManagementContext _context;
-        public SalaryController(ManagementContext context, ISalaryService salaryService)
+        public SalaryController(ManagementContext context)
         {
             _context = context;
-            _salaryService = salaryService;
         }
+
         // GET: api/<SalaryController>
         [HttpGet]
-        public IEnumerable<Salary> Get()
+        public ActionResult<IEnumerable<Salary>> Get()
         {
-            List<Salary> salaries = _salaryService.GetAll().ToList();
-            return salaries;
+            var salary = _context.Salary.ToList();
+            if (salary.Count == 0)
+            {
+                return NotFound("No List Found");
+            }
+            return Ok(salary);
         }
 
         // GET api/<SalaryController>/5
         [HttpGet("{id}")]
-        public Salary Get(int id)
+        public ActionResult<Salary> Get(int id)
         {
-            return _salaryService.GetSalaryById(id);
+            var salary = _context.Salary.SingleOrDefault(x => x.Id == id);
+            //var emp = _employeeService.GetEmployeeById(id);
+            return Ok(salary);
         }
 
         // POST api/<SalaryController>

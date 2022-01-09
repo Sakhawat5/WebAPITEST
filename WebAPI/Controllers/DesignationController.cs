@@ -3,9 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebAPI.Data;
-using WebAPI.Data.Interface;
-using WebAPI.Data.Models;
+using WebAPI.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,28 +13,35 @@ namespace WebAPI.Controllers
     [ApiController]
     public class DesignationController : ControllerBase
     {
-        private readonly IDesignationService _designationService;
+        //private readonly IDesignationService _designationService;
         private readonly ManagementContext _context;
-        public DesignationController(ManagementContext context, IDesignationService designationService)
+        public DesignationController(ManagementContext context)
         {
             _context = context;
-            _designationService = designationService;
         }
+
         // GET: api/<DesignationController>
         [HttpGet]
-        public IEnumerable<Designation> Get()
+        public ActionResult<IEnumerable<Designation>> Get()
         {
-            List<Designation> designations = _designationService.GetAll().ToList();
-            return designations;
+            var designation = _context.Designation.ToList();
+            if (designation.Count == 0)
+            {
+                return NotFound("No List Found");
+            }
+            return Ok(designation);
+
+            //List<Designation> designations = _designationService.GetAll().ToList();
+            //return designations;
         }
 
-        // GET api/<DesignationController>/5
-        [HttpGet("{id}")]
-        public Designation Get(int id)
-        {
+        //// GET api/<DesignationController>/5
+        //[HttpGet("{id}")]
+        //public Designation Get(int id)
+        //{
 
-            return _designationService.GetDesignationById(id);
-        }
+        //    return _designationService.GetDesignationById(id);
+        //}
 
         // POST api/<DesignationController>
         [HttpPost]
