@@ -12,20 +12,22 @@ namespace WebAPI.Models
     {
         SqlConnection conn = new SqlConnection("Data Source=SADMAN-PC;Initial Catalog=HRMS;Trusted_Connection=True;MultipleActiveResultSets=true");
         
+
         public string EmployeeDetails(EmployeeDetails emp)
         {
             string msg = string.Empty;
             try
             {
-                SqlCommand aCommand = new SqlCommand("SP_GetEmployeeDescription", conn);
+                SqlCommand aCommand = new SqlCommand("Sp_Employee", conn);
                 aCommand.CommandType = CommandType.StoredProcedure;
                 //aCommand.Parameters.AddWithValue("@EmpCode", emp.EmpName);
-                aCommand.Parameters.AddWithValue("@EmpCode", emp.Id);
+                aCommand.Parameters.AddWithValue("@EmpCode", emp.EmpCode);
                 aCommand.Parameters.AddWithValue("@EmpName", emp.EmpName);
-                aCommand.Parameters.AddWithValue("@Gendar", emp.Gender);
+                aCommand.Parameters.AddWithValue("@Gender", emp.Gender);
                 aCommand.Parameters.AddWithValue("@Mobile", emp.Mobile);
-                aCommand.Parameters.AddWithValue("@DesignationId", emp.Designation);
-                aCommand.Parameters.AddWithValue("@SalaryId", emp.Salary);
+                aCommand.Parameters.AddWithValue("@DesignationId", emp.Name);
+                aCommand.Parameters.AddWithValue("@SalaryId", emp.Amount);
+                aCommand.Parameters.AddWithValue("@type", emp.Type);
                 conn.Open();
                 aCommand.ExecuteNonQuery();
                 conn.Close();
@@ -46,22 +48,51 @@ namespace WebAPI.Models
         }
 
         //Get Recoard
-        public DataSet EmployeeDetailsGet(EmployeeDetails emp, out string msg)
+        public DataSet GetEmployee(Employee emp, out string msg)
         {
             msg = string.Empty;
             DataSet ds = new DataSet();
             try
             {
-                SqlCommand aCommand = new SqlCommand("SP_GetEmployeeDescription");
+                SqlCommand aCommand = new SqlCommand("Sp_Employee", conn);
                 aCommand.CommandType = CommandType.StoredProcedure;
                 //aCommand.Parameters.AddWithValue("@EmpCode", emp.EmpName);
-                aCommand.Parameters.AddWithValue("@EmpCode", emp.Id);
+                aCommand.Parameters.AddWithValue("@EmpCode", emp.EmpCode);
                 aCommand.Parameters.AddWithValue("@EmpName", emp.EmpName);
-                aCommand.Parameters.AddWithValue("@Gendar", emp.Gender);
+                aCommand.Parameters.AddWithValue("@Gender", emp.Gender);
                 aCommand.Parameters.AddWithValue("@Mobile", emp.Mobile);
-                aCommand.Parameters.AddWithValue("@DesignationId", emp.Designation);
-                aCommand.Parameters.AddWithValue("@SalaryId", emp.Salary);
-                SqlDataAdapter da = new SqlDataAdapter();
+                aCommand.Parameters.AddWithValue("@DesignationId", emp.DesignationId);
+                aCommand.Parameters.AddWithValue("@SalaryId", emp.SalaryId);
+                aCommand.Parameters.AddWithValue("@type", emp.Type);
+                SqlDataAdapter da = new SqlDataAdapter(aCommand);
+                da.SelectCommand = aCommand;
+                da.Fill(ds);
+                msg = "Successfully";
+            }
+            catch (global::System.Exception ex)
+            {
+                msg = ex.Message;
+            }
+            return ds;
+        }
+        //Get Recoard
+        public DataSet GetEmployeeDetails(EmployeeDetails emp, out string msg)
+        {
+            msg = string.Empty;
+            DataSet ds = new DataSet();
+            try
+            {
+                SqlCommand aCommand = new SqlCommand("Sp_Employee", conn);
+                aCommand.CommandType = CommandType.StoredProcedure;
+                //aCommand.Parameters.AddWithValue("@EmpCode", emp.EmpName);
+                aCommand.Parameters.AddWithValue("@EmpCode", emp.EmpCode);
+                aCommand.Parameters.AddWithValue("@EmpName", emp.EmpName);
+                aCommand.Parameters.AddWithValue("@Gender", emp.Gender);
+                aCommand.Parameters.AddWithValue("@Mobile", emp.Mobile);
+                aCommand.Parameters.AddWithValue("@DesignationId", emp.Name);
+                aCommand.Parameters.AddWithValue("@SalaryId", emp.Amount);
+                aCommand.Parameters.AddWithValue("@type", emp.Type);
+                SqlDataAdapter da = new SqlDataAdapter(aCommand);
                 da.SelectCommand = aCommand;
                 da.Fill(ds);
                 msg = "Successfully";

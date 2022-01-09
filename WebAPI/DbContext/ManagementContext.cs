@@ -8,7 +8,7 @@ using WebAPI.Models;
 using WebAPI.ViewModel;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace WebAPI
+namespace WebAPI 
 {
     public class ManagementContext : DbContext
     {

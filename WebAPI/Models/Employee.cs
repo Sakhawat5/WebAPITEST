@@ -9,12 +9,12 @@ namespace WebAPI.Models
 {
     public class Employee
     {
-        [Key]
-        public int EmpCode { get; set; }
-        public string EmpName { get; set; }
-        public string Gender { get; set; }
-        public int Mobile { get; set; }
-        public int DesignationId { get; set; }
-        public int SalaryId { get; set; }
+        public int EmpCode { get; set; } = 0;
+        public string EmpName { get; set; } = "";
+        public string Gender { get; set; } = "";
+        public int Mobile { get; set; } = 0;
+        public int DesignationId { get; set; } = 0;
+        public int SalaryId { get; set; } = 0;
+        public string Type { get; set; } = "";
     }
 }

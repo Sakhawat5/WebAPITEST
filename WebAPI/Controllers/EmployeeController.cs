@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Models;
@@ -14,7 +15,9 @@ namespace WebAPI.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-       // private readonly IEmployeeService _employeeService;
+        Db dbop = new Db();
+        string msg = string.Empty;
+        // private readonly IEmployeeService _employeeService;
         private readonly ManagementContext _context;
         public EmployeeController(ManagementContext context)
         {
@@ -35,12 +38,23 @@ namespace WebAPI.Controllers
         public ActionResult<IEnumerable<Employee>> Get()
         {
             //var employees = new List<Employee>();
-            var employees = _context.Employee.ToList();
-            if (employees.Count == 0)
+            Employee ed = new Employee();
+            ed.Type = "get";
+            DataSet ds = dbop.GetEmployee(ed, out msg);
+            List<Employee> empDetail = new List<Employee>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                return NotFound("No List Found");
+                empDetail.Add(new Employee
+                {
+                    EmpCode = Convert.ToInt32(dr["EmpCode"].ToString()),
+                    EmpName = dr["EmpName"].ToString(),
+                    Gender = dr["Gender"].ToString(),
+                    Mobile = Convert.ToInt32(dr["Mobile"].ToString()),
+                    DesignationId = Convert.ToInt32(dr["DesignationId"].ToString()),
+                    SalaryId = Convert.ToInt32(dr["SalaryId"].ToString())
+                });
             }
-            return Ok(employees);
+            return empDetail;
             //List<Employee> employeeList = _employeeService.GetAll().ToList();
             //return Ok(employeeList);
         }

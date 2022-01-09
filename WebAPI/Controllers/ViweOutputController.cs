@@ -17,6 +17,7 @@ namespace WebAPI.Controllers
     public class ViweOutputController : ControllerBase
     {
         Db dbop = new Db();
+        //EmpDb context = new EmpDb();
         string msg = string.Empty;
         private readonly ManagementContext _context;
         public ViweOutputController(ManagementContext context)
@@ -27,36 +28,49 @@ namespace WebAPI.Controllers
 
         // GET: api/<ValuesController>
         [HttpGet]
-        public ActionResult<IEnumerable<EmployeeDetails>> Get()
+        public ActionResult<IEnumerable<Employee>> Get()
         {
-            
-            EmployeeDetails ed = new EmployeeDetails();
+
+            Employee ed = new Employee();
             ed.Type = "get";
-            DataSet ds = dbop.EmployeeDetailsGet(ed, out msg);
-            List<EmployeeDetails> empDetail = new List<EmployeeDetails>();
+            DataSet ds = dbop.GetEmployee(ed, out msg);
+            List<Employee> empDetail = new List<Employee>();
             foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                empDetail.Add(new EmployeeDetails
+                empDetail.Add(new Employee
                 {
+                    EmpCode = Convert.ToInt32(dr["EmpCode"].ToString()),
                     EmpName = dr["EmpName"].ToString(),
                     Gender = dr["Gender"].ToString(),
-                    Mobile =Convert.ToInt32(dr["Mobile"].ToString()),
-                    Designation = Convert.ToInt32(dr["Designation"].ToString()),
-                    Salary = Convert.ToInt32(dr["Salary"].ToString())
+                    Mobile = Convert.ToInt32(dr["Mobile"].ToString()),
+                    DesignationId = Convert.ToInt32(dr["DesignationId"].ToString()),
+                    SalaryId = Convert.ToInt32(dr["SalaryId"].ToString())
                 });
             }
             return empDetail;
-            //string empName = "Amy";
-            //try
-            //{
-            //    var d = _context.EmployeeDetails.FromSqlRaw($"exec [dbo].[SP_GetEmployeeDescription] @empName={empName}");
-            //    return Ok(d);
-            //}
-            //catch (Exception e)
-            //{
-            //    throw;
-            //}
         }
+
+        // GET: api/<ValuesController>
+        //[HttpGet]
+        //public ActionResult<IEnumerable<Employees>> Get()
+        //{
+
+        //    Employees ed = new Employees();
+        //    ed.type = "get";
+        //    DataSet ds = context.EmployeeDetailsGet(ed, out msg);
+        //    List<Employees> empDetail = new List<Employees>();
+        //    foreach (DataRow dr in ds.Tables[0].Rows)
+        //    {
+        //        empDetail.Add(new Employees
+        //        {
+        //            ID = Convert.ToInt32(dr["ID"].ToString()),
+        //            Email = dr["Email"].ToString(),
+        //            Emp_Name = dr["Emp_Name"].ToString(),
+        //            Designation = dr["Designation"].ToString()
+        //        });
+        //    }
+        //    return empDetail;
+        //}
 
         // GET api/<ValuesController>/5
         [HttpGet("{id}")]

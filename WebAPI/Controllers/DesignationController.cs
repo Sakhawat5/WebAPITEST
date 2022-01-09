@@ -35,24 +35,28 @@ namespace WebAPI.Controllers
             //return designations;
         }
 
-        //// GET api/<DesignationController>/5
-        //[HttpGet("{id}")]
-        //public Designation Get(int id)
-        //{
+        // GET api/<DesignationController>/5
+        [HttpGet("{id}")]
+        public Designation Get(int id)
+        {
 
-        //    return _designationService.GetDesignationById(id);
-        //}
+            return _context.Designation.SingleOrDefault(x=>x.Id == id);
+        }
 
         // POST api/<DesignationController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Designation designation)
         {
+            _context.Designation.Add(designation);
+            _context.SaveChanges();
         }
 
         // PUT api/<DesignationController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] Designation designation)
         {
+            var  designations = _context.Designation.SingleOrDefault(x => x.Id == id);
+
         }
 
         // DELETE api/<DesignationController>/5
