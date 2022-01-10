@@ -4,16 +4,17 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPI.Models;
 using WebAPI.ViewModel;
 
-namespace WebAPI.Models
+namespace WebAPI.DB
 {
     public class Db
     {
         SqlConnection conn = new SqlConnection("Data Source=SADMAN-PC;Initial Catalog=HRMS;Trusted_Connection=True;MultipleActiveResultSets=true");
         
 
-        public string EmployeeDetails(EmployeeDetails emp)
+        public string EmployeeOpt(Employee emp)
         {
             string msg = string.Empty;
             try
@@ -25,8 +26,8 @@ namespace WebAPI.Models
                 aCommand.Parameters.AddWithValue("@EmpName", emp.EmpName);
                 aCommand.Parameters.AddWithValue("@Gender", emp.Gender);
                 aCommand.Parameters.AddWithValue("@Mobile", emp.Mobile);
-                aCommand.Parameters.AddWithValue("@DesignationId", emp.Name);
-                aCommand.Parameters.AddWithValue("@SalaryId", emp.Amount);
+                aCommand.Parameters.AddWithValue("@DesignationId", emp.DesignationId);
+                aCommand.Parameters.AddWithValue("@SalaryId", emp.SalaryId);
                 aCommand.Parameters.AddWithValue("@type", emp.Type);
                 conn.Open();
                 aCommand.ExecuteNonQuery();
@@ -75,6 +76,7 @@ namespace WebAPI.Models
             }
             return ds;
         }
+
         //Get Recoard
         public DataSet GetEmployeeDetails(EmployeeDetails emp, out string msg)
         {
@@ -104,36 +106,5 @@ namespace WebAPI.Models
             return ds;
         }
 
-        public DataTable SelectAll(string procName, SqlParameter[] para = null)
-        {
-            DataTable dt = new DataTable();
-            try
-            {
-                using (SqlConnection con = conn)
-                {
-                    con.Open();
-
-                    using (SqlCommand cmd = new SqlCommand(procName, con))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        if (para != null)
-                            cmd.Parameters.AddRange(para);
-
-                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                        {
-
-                            da.Fill(dt);
-                        }
-                    }
-                }
-            }
-            catch (Exception sqlEx)
-            {
-                Console.WriteLine(@"：Unable to establish a connection: {0}", sqlEx);
-            }
-
-            return dt;
-
-        }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPI.DB;
 using WebAPI.Models;
 using WebAPI.ViewModel;
 
@@ -61,61 +62,78 @@ namespace WebAPI.Controllers
 
         //GET api/<EmployeeApiController>/5
         [HttpGet("{id}")]
-        public ActionResult<Employee> Get(int id)
+        public ActionResult<IEnumerable<Employee>> Get(int id)
         {
-            var employee = _context.Employee.SingleOrDefault(x => x.EmpCode == id);
+            Employee employee = new Employee();
+            employee.EmpCode = id;
+            employee.Type = "getId";
+            DataSet dataSet = dbop.GetEmployee(employee, out msg);
+            List<Employee> employees = new List<Employee>();
+            foreach (DataRow dr in dataSet.Tables[0].Rows)
+            {
+                employees.Add(new Employee
+                {
+                    EmpCode = Convert.ToInt32(dr["EmpCode"]),
+                    EmpName = dr["EmpName"].ToString(),
+                    Gender = dr["Gender"].ToString(),
+                    Mobile = Convert.ToInt32(dr["Mobile"]),
+                    DesignationId = Convert.ToInt32(dr["DesignationId"]),
+                    SalaryId = Convert.ToInt32(dr["SalaryId"])
+                });
+            }
             //var emp = _employeeService.GetEmployeeById(id);
-            return Ok(employee);
+            return employees;
         }
 
         // POST api/<EmployeeApiController>
         [HttpPost]
-        public ActionResult Post(Employee employee)
+        public string Post([FromBody] Employee employee)
         {
-            _context.Employee.Add(employee);
-            _context.SaveChanges();
-            return Ok(employee);
+            string msg = string.Empty;
+            try
+            {
+                msg = dbop.EmployeeOpt(employee);
+            }
+            catch (Exception ex)
+            {
+
+                msg = ex.Message;
+            }
+            return msg;
         }
 
         // PUT api/<EmployeeApiController>/5
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] Employee employee)
+        public string Put(int id, [FromBody] Employee employee)
         {
             try
             {
-                var oldEmployee = Get(id);
-                if (oldEmployee != null)
-                {
-                    _context.Employee.Update(employee);
-                    _context.SaveChanges();
-                }
-                return Ok(employee);
+                employee.EmpCode = id;
+                msg = dbop.EmployeeOpt(employee);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw e;                
+                msg = ex.Message;
             }
-            
+            return msg;
         }
 
         // DELETE api/<EmployeeApiController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public string Delete(int id)
         {
+            Employee employee = new Employee();
             try
             {
-                var employee = _context.Employee.SingleOrDefault(x => x.EmpCode == id);
-                if (employee != null)
-                {
-                    _context.Employee.Remove(employee);
-                    _context.SaveChanges();
-                }
+                employee.EmpCode = id;
+                employee.Type = "delete";
+                msg = dbop.EmployeeOpt(employee);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-
-                throw;
+                msg = ex.Message;
             }
+            return msg;
         }
     }
 }

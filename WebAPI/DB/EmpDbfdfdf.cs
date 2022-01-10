@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Models
 {
-    public class EmpDb
+    public class EmpDbfdfdf
     {
         SqlConnection conn = new SqlConnection("Data Source=SADMAN-PC;Initial Catalog=HRMS;Trusted_Connection=True;MultipleActiveResultSets=true");
 
